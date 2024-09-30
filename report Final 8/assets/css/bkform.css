@@ -1,0 +1,753 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+@import url("https://fonts.googleapis.com/css?family=Roboto:500,400,700");
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0px;
+  height: 100%;
+  background-color: #ffffff;
+}
+/* a blue color as a generic focus style */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+a {
+  text-decoration: none;
+}
+@font-face {
+  font-family: "Arial Rounded MT Bold-Regular";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/6527e32695b63aedc74fc79a/fonts/arialroundedmtboldregular.ttf")
+    format("truetype");
+}
+
+
+.HOME {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .HOME .div {
+    background-color: #ffffff;
+    overflow: hidden;
+    width: 1462px;
+    height: 4139px;
+    position: relative;
+  }
+  
+  .HOME .overlap {
+    position: absolute;
+    width: 1468px;
+    height: 2659px;
+    top: 0;
+    left: 0;
+  }
+  
+  .HOME .rectangle {
+    position: absolute;
+    width: 1459px;
+    height: 1251px;
+    top: 0;
+    left: 3px;
+    background: linear-gradient(180deg, rgb(234, 238, 248) 0%, rgb(255, 255, 255) 100%);
+  }
+  
+  .HOME .rectangle-2 {
+    position: absolute;
+    width: 1459px;
+    height: 1251px;
+    top: 1294px;
+    left: 2px;
+    background: linear-gradient(180deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
+  }
+  
+  .HOME .group {
+    position: absolute;
+    width: 1318px;
+    height: 125px;
+    top: 9px;
+    left: 50px;
+  }
+  
+  .HOME .overlap-group {
+    position: relative;
+    height: 125px;
+  }
+  
+  .HOME .group-2 {
+    position: absolute;
+    width: 1308px;
+    height: 125px;
+    top: 0;
+    left: 0;
+  }
+  
+  .HOME .text-wrapper {
+    position: absolute;
+    width: 73px;
+    top: 42px;
+    left: 445px;
+    font-family: "Arial Rounded MT Bold-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .HOME .text-wrapper-2 {
+    position: absolute;
+    width: 74px;
+    top: 44px;
+    left: 587px;
+    font-family: "Arial Rounded MT Bold-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .HOME .text-wrapper-3 {
+    position: absolute;
+    width: 145px;
+    top: 44px;
+    left: 720px;
+    font-family: "Arial Rounded MT Bold-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .HOME .plans-pricing {
+    position: absolute;
+    width: 194px;
+    top: 44px;
+    left: 909px;
+    font-family: "Arial Rounded MT Bold-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .HOME .text-wrapper-4 {
+    position: absolute;
+    width: 157px;
+    top: 44px;
+    left: 1139px;
+    font-family: "Arial Rounded MT Bold-Regular", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .HOME .overlap-group-2 {
+    position: absolute;
+    width: 330px;
+    height: 125px;
+    top: 0;
+    left: 0;
+  }
+  
+  .HOME .text-wrapper-5 {
+    position: absolute;
+    width: 220px;
+    top: 102px;
+    left: 57px;
+    font-family: "Roboto", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .HOME .whatsapp-image {
+    position: absolute;
+    width: 330px;
+    height: 112px;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+  }
+  
+  .HOME .sort-down {
+    position: absolute;
+    width: 42px;
+    height: 40px;
+    top: 36px;
+    left: 505px;
+  }
+  
+  .HOME .img {
+    left: 649px;
+    position: absolute;
+    width: 42px;
+    height: 40px;
+    top: 36px;
+  }
+  
+  .HOME .sort-down-2 {
+    left: 843px;
+    position: absolute;
+    width: 42px;
+    height: 40px;
+    top: 36px;
+  }
+  
+  .HOME .sort-down-3 {
+    left: 1074px;
+    position: absolute;
+    width: 42px;
+    height: 40px;
+    top: 36px;
+  }
+  
+  .HOME .sort-down-4 {
+    left: 1276px;
+    position: absolute;
+    width: 42px;
+    height: 40px;
+    top: 36px;
+  }
+  
+  .HOME .group-3 {
+    position: absolute;
+    width: 1324px;
+    height: 2399px;
+    top: 167px;
+    left: 144px;
+  }
+  
+  .HOME .group-4 {
+    position: absolute;
+    width: 840px;
+    height: 747px;
+    top: 240px;
+    left: 0;
+  }
+  
+  .HOME .flexcontainer {
+    width: 276px;
+    height: 675px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    position: absolute;
+    top: 72px;
+    left: 0;
+  }
+  
+  .HOME .text {
+    position: relative;
+    align-self: stretch;
+    font-family: "Roboto", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 32px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .HOME .span {
+    font-family: "Roboto", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    font-size: 32px;
+    letter-spacing: 0;
+  }
+  
+  .HOME .text-wrapper-6 {
+    position: absolute;
+    top: 0;
+    left: 422px;
+    font-family: "Roboto", Helvetica;
+    font-weight: 500;
+    color: #15b70780;
+    font-size: 15px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .HOME .text-wrapper-7 {
+    position: absolute;
+    top: 0;
+    left: 530px;
+    font-family: "Roboto", Helvetica;
+    font-weight: 500;
+    color: #b1000080;
+    font-size: 15px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .HOME .text-wrapper-8 {
+    position: absolute;
+    top: 0;
+    left: 666px;
+    font-family: "Roboto", Helvetica;
+    font-weight: 500;
+    color: #00000080;
+    font-size: 15px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .HOME .text-wrapper-9 {
+    position: absolute;
+    top: 0;
+    left: 756px;
+    font-family: "Roboto", Helvetica;
+    font-weight: 500;
+    color: #00000080;
+    font-size: 15px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .HOME .rectangle-3 {
+    position: absolute;
+    width: 258px;
+    height: 240px;
+    top: 0;
+    left: 1026px;
+    object-fit: cover;
+  }
+  
+  .HOME .appearance-packing {
+    position: absolute;
+    top: 106px;
+    left: 350px;
+    font-family: "Roboto", Helvetica;
+    font-weight: 700;
+    color: #3f69ff;
+    font-size: 36px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .HOME .appearance-packing-2 {
+    position: absolute;
+    top: 2357px;
+    left: 404px;
+    font-family: "Roboto", Helvetica;
+    font-weight: 700;
+    color: #3f69ff;
+    font-size: 36px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .HOME .text-wrapper-10 {
+    position: absolute;
+    top: 1283px;
+    left: 500px;
+    font-family: "Roboto", Helvetica;
+    font-weight: 700;
+    color: #3f69ff;
+    font-size: 36px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .HOME .overlap-wrapper {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 477px;
+    left: 900px;
+  }
+  
+  .HOME .overlap-2 {
+    position: relative;
+    width: 476px;
+    height: 54px;
+    top: -4px;
+    left: -4px;
+    border: 4px solid;
+    border-color: #7ba7d7;
+  }
+  
+  .HOME .line {
+    position: absolute;
+    width: 8px;
+    height: 9px;
+    top: 38px;
+    left: 462px;
+    object-fit: cover;
+  }
+  
+  .HOME .line-2 {
+    position: absolute;
+    width: 9px;
+    height: 10px;
+    top: 37px;
+    left: 460px;
+    object-fit: cover;
+  }
+  
+  .HOME .line-3 {
+    position: absolute;
+    width: 11px;
+    height: 12px;
+    top: 35px;
+    left: 458px;
+    object-fit: cover;
+  }
+  
+  .HOME .overlap-group-wrapper {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 551px;
+    left: 900px;
+  }
+  
+  .HOME .div-wrapper {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 628px;
+    left: 899px;
+  }
+  
+  .HOME .group-5 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 708px;
+    left: 899px;
+  }
+  
+  .HOME .group-6 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 786px;
+    left: 899px;
+  }
+  
+  .HOME .group-7 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 864px;
+    left: 899px;
+  }
+  
+  .HOME .group-8 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 940px;
+    left: 899px;
+  }
+  
+  .HOME .group-9 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 1020px;
+    left: 899px;
+  }
+  
+  .HOME .group-10 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 1092px;
+    left: 899px;
+  }
+  
+  .HOME .group-11 {
+    position: absolute;
+    width: 840px;
+    height: 660px;
+    top: 1653px;
+    left: 140px;
+  }
+  
+  .HOME .flexcontainer-2 {
+    width: 359px;
+    height: 588px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    position: absolute;
+    top: 72px;
+    left: 0;
+  }
+  
+  .HOME .group-12 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 1723px;
+    left: 896px;
+  }
+  
+  .HOME .group-13 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 1797px;
+    left: 896px;
+  }
+  
+  .HOME .group-14 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 1874px;
+    left: 895px;
+  }
+  
+  .HOME .group-15 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 1954px;
+    left: 895px;
+  }
+  
+  .HOME .group-16 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 2032px;
+    left: 895px;
+  }
+  
+  .HOME .group-17 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 2110px;
+    left: 895px;
+  }
+  
+  .HOME .group-18 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 2186px;
+    left: 895px;
+  }
+  
+  .HOME .screenshot {
+    position: absolute;
+    width: 219px;
+    height: 226px;
+    top: 1358px;
+    left: 35px;
+    object-fit: cover;
+  }
+  
+  .HOME .line-4 {
+    position: absolute;
+    width: 359px;
+    height: 1px;
+    top: 1470px;
+    left: 261px;
+    object-fit: cover;
+  }
+  
+  .HOME .line-5 {
+    position: absolute;
+    width: 611px;
+    height: 1px;
+    top: 1470px;
+    left: 851px;
+    object-fit: cover;
+  }
+  
+  .HOME .line-6 {
+    position: absolute;
+    width: 511px;
+    height: 1px;
+    top: 2545px;
+    left: 0;
+    object-fit: cover;
+  }
+  
+  .HOME .line-7 {
+    position: absolute;
+    width: 297px;
+    height: 2px;
+    top: 2544px;
+    left: 945px;
+    object-fit: cover;
+  }
+  
+  .HOME .screenshot-2 {
+    position: absolute;
+    width: 244px;
+    height: 226px;
+    top: 2433px;
+    left: 1154px;
+    object-fit: cover;
+  }
+  
+  .HOME .p {
+    position: absolute;
+    top: 4082px;
+    left: 469px;
+    font-family: "Roboto", Helvetica;
+    font-weight: 500;
+    color: #000000;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .HOME .line-8 {
+    position: absolute;
+    width: 1430px;
+    height: 4px;
+    top: 4056px;
+    left: 16px;
+  }
+  
+  .HOME .overlap-3 {
+    position: absolute;
+    width: 1226px;
+    height: 925px;
+    top: 2748px;
+    left: 140px;
+  }
+  
+  .HOME .group-19 {
+    position: absolute;
+    width: 840px;
+    height: 925px;
+    top: 0;
+    left: 0;
+  }
+  
+  .HOME .flexcontainer-3 {
+    width: 408px;
+    height: 853px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    position: absolute;
+    top: 72px;
+    left: 0;
+  }
+  
+  .HOME .group-20 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 70px;
+    left: 756px;
+  }
+  
+  .HOME .group-21 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 144px;
+    left: 756px;
+  }
+  
+  .HOME .group-22 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 221px;
+    left: 755px;
+  }
+  
+  .HOME .group-23 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 301px;
+    left: 755px;
+  }
+  
+  .HOME .group-24 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 379px;
+    left: 755px;
+  }
+  
+  .HOME .group-25 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 457px;
+    left: 755px;
+  }
+  
+  .HOME .group-26 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 533px;
+    left: 755px;
+  }
+  
+  .HOME .group-27 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 611px;
+    left: 756px;
+  }
+  
+  .HOME .group-28 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 688px;
+    left: 756px;
+  }
+  
+  .HOME .group-29 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 766px;
+    left: 755px;
+  }
+  
+  .HOME .group-30 {
+    position: absolute;
+    width: 470px;
+    height: 47px;
+    top: 836px;
+    left: 755px;
+  }
+  

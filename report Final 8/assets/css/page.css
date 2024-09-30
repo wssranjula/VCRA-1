@@ -1,0 +1,166 @@
+
+        .product-pictures {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image-upload {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .card img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .upload-icon {
+            position: absolute;
+            font-size: 24px;
+            color: #aaa;
+        }
+
+        .upload-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .title {
+            background-color: #e6f0ff;
+            padding: 18px 20px;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000000;
+            text-align: center;
+            height: 53px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 150px;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #0056b3;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            float: right;
+        }
+
+        .submit-btn:hover {
+            background-color: #003d80;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f8fd;
+        }
+
+        .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Align vertically */
+  flex-wrap: wrap;     /* Handle overflow by wrapping */
+}
+
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-left: 200px;
+            border-color: #ffffff;
+
+        }
+
+        th,
+        td {
+            padding: 12px;
+            /* border: 1px solid #ddd; */
+            text-align: left;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .comments {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .pagination {
+            margin: 20px 0;
+            text-align: center;
+            float: right;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+        }
+
+        /* Enlarge radio buttons */
+        input[type="radio"] {
+            transform: scale(1.4);
+            /* Adjust the scale to enlarge */
+            margin: 10px;
+            /* Add some margin for better spacing */
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-group button {
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .confirm {
+            background-color: #28a745;
+        }
+
+        .not-confirm {
+            background-color: #dc3545;
+        }
+
+        .hold {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .button-group button input[type="radio"] {
+            margin-right: 10px;
+            accent-color: white;
+        }

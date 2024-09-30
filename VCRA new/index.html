@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>VCRA Product Inspectation</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center; /* Align text to center horizontally */
+    }
+    .logo img {
+      margin-top: 10px; /* Optional: Adjust margin for spacing between image and text */
+    }
+    .custom-h1 {
+      font-size: 26px;
+      color: rgb(146, 146, 150);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 40px; /* Adjust height as needed */
+    }
+
+    .logo h1 {
+      font-size: 1.5rem; /* Adjust font size as needed */
+      margin-left: 10px; /* Adjust margin as needed for spacing between logo and text */
+    }
+
+    .navmenu {
+      margin-left: auto; /* Pushes the navmenu to the right */
+    }
+
+    .ms-3 {
+      margin-top: 20px;
+    }
+
+    .navmenu .login-btn {
+    border: none;
+    outline: none;
+    background: #fff;
+    color: #275360;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.15s ease;
+  }
+
+  .navmenu .login-btn:hover {
+      background: #ddd;
+  }
+
+  .form-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    max-width: 720px;
+    background: #fff;
+    border: 2px solid #fff;
+    transform: translate(-50%, -70%);
+}
+
+.show-popup .form-popup {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s ease, opacity 0.1s;
+}
+
+.form-popup .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: #878484;
+    cursor: pointer;
+}
+
+.blur-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: 0.1s ease;
+}
+
+.show-popup .blur-bg-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.form-popup .form-box {
+    display: flex;
+}
+
+.form-box .form-details {
+    width: 100%;
+    color: #fff;
+    max-width: 330px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-box .form-details img{
+    width: 100%;
+    max-width: 230px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-box .form-details p{
+    width: 100%;
+    max-width: 230px;
+    text-align: center;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 250px;
+}
+
+.login .form-details {
+    padding: 0 40px;
+    background: url("assets/img/img123.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.form-box .form-content {
+    width: 100%;
+    padding: 35px;
+}
+
+.form-box h2 {
+    text-align: center;
+    margin-bottom: 29px;
+}
+
+form .input-field {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.input-field input {
+    height: 100%;
+    width: 100%;
+    background: none;
+    outline: none;
+    font-size: 0.95rem;
+    padding: 0 15px;
+    border: 1px solid #717171;
+    border-radius: 3px;
+}
+
+.input-field input:focus {
+    border: 1px solid #00bcd4;
+}
+
+.input-field label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #4a4646;
+    pointer-events: none;
+    transition: 0.2s ease;
+}
+
+.input-field input:is(:focus, :valid) {
+    padding: 16px 15px 0;
+}
+
+.input-field input:is(:focus, :valid)~label {
+    transform: translateY(-120%);
+    color: #00bcd4;
+    font-size: 0.75rem;
+}
+
+.form-box a {
+    color: #00bcd4;
+    text-decoration: none;
+}
+
+.form-box a:hover {
+    text-decoration: underline;
+}
+
+form :where(.forgot-pass-link, .policy-text) {
+    display: inline-flex;
+    margin-top: 13px;
+    font-size: 0.95rem;
+}
+
+form button {
+    width: 100%;
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 14px 0;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 25px 0;
+    background: #00bcd4;
+    transition: 0.2s ease;
+}
+
+form button:hover {
+    background: #0097a7;
+}
+
+.form-content .bottom-link {
+    text-align: center;
+}
+
+.form-popup .signup,
+.form-popup.show-signup .login {
+    display: none;
+}
+
+@media (max-width: 760px) {
+    .form-popup {
+        width: 95%;
+    }
+
+    .form-box .form-details {
+        display: none;
+    }
+
+    .form-box .form-content {
+        padding: 30px 20px;
+    }
+}
+  </style>
+</head>
+
+<body>
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+  
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+      </a>
+      <h5 class="ms-3" >Product Inspectation</h1>
+
+  
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html#hero" class="">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#team">Our Services</a></li>
+          <li><a href="index.html#portfolio">Our Testimonials</a></li>
+          <li><a href="index.html#team">Get a Quote</a></li>
+          <li><button class="login-btn">LOG IN</button></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>  
+    </div>
+  </header>
+
+  <div class="blur-bg-overlay"></div>
+  <div class="form-popup">
+      <span class="close-btn material-symbols-rounded">close</span>
+      <div class="form-box login">
+          <div class="form-details">
+              <img src="assets/img/logo.png" alt="">
+              <p>PRODUCT INSPECTION</p>
+          </div>
+          <div class="form-content">
+              <h2>LOGIN</h2>
+              <form action="#" id="loginForm">
+                  <div class="input-field">
+                      <input type="text" id="email" required>
+                      <label>Email</label>
+                  </div>
+                  <div class="input-field">
+                      <input type="password" id="password" required>
+                      <label>Password</label>
+                  </div>
+                  <a href="#" class="forgot-pass-link">Forgot password?</a>
+                  <button type="submit">Log In</button>
+              </form>
+              <div class="bottom-link">
+                  Don't have an account?
+                  <a href="#" id="signup-link">Signup</a>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <script>
+    // Hardcoded credentials
+    const validEmail = "user@example.com";
+    const validPassword = "password123";
+  
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form from submitting
+      
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+  
+      // Check hardcoded credentials
+      if (email === validEmail && password === validPassword) {
+        // Redirect to a new page if credentials are correct
+        window.location.href = "../report Final 8/index.html"; // Change the URL to where you want to redirect
+      } else {
+        // Display error message for invalid credentials
+        alert("Invalid email or password. Please try again.");
+      }
+    });
+  </script>
+
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="section hero" style="opacity: 80%; background-image: url('assets/img/lll.png'); background-size: cover; background-position: center;">
+
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+            <img src="assets/img/ssss.png" class="img-fluid animated" alt="">
+            <!-- <h1 class="">Product Inspections</h1><br>
+            <h1 class="custom-h1">VCRA</h1><br>
+            <h2 class=""><b>VCRA Product Inspections</b></h2><br><br> -->
+            <p>VCRA Product inspections providing reliable services in Los Angeles and surrounding areas. Fair pricing and professional services.</p>
+          </div>
+          <div class="col-lg-6 order-1 order-lg-2 hero-img">
+            <img src="assets/img/bgggg.png" class="img-fluid animated" alt="">
+            <img src="assets/img/lll.jpg" class="img-fluid animated" alt="">
+          </div>
+        </div>
+      </div>
+    </section><!-- /Hero Section -->
+
+    <!-- About Section -->
+    <section id="about" class="section about">
+
+      <div class="container">
+
+        <div class="row gy-3">
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+            <img src="assets/img/International cooperation-rafiki 1.jpg" alt="" class="img-fluid">
+          </div>
+
+          <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="about-content ps-0 ps-lg-3">
+              <h3>Introduction VCRA Product Inspection LLC</h3>
+              <p class="fst-italic">
+
+              Audit and certify your product quality on Garments , Shoes, Dinnerware, Cookware, Tableware and more.
+              Evaluate Manufacturing facilities to certify for your product. Conduct social compliance reviews.
+              Inspections are conducted based on ANSI standards ( American National Standards) ASQC 21.4, NF06 -022BS56001, DIN 400080
+
+              </p>
+              <ul>
+                <li>
+                  <i class="bi bi-envelope"></i>
+                  <div>
+                    <h4>Mr. Viraj Yatawara</h4>
+                    <p>virajyatawara@gmail.com</p>
+                  </div>
+                </li>
+              </ul>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /About Section -->
+
+    <!-- Services Section -->
+    <section id="about" class="section about">
+
+      <div class="container">
+
+        <div class="row gy-3">
+
+
+          <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="about-content ps-0 ps-lg-3">
+              <h2>Our Services</h2>
+              <p>Inspections will be performed based on AQL standards ( Method used to measure production order sampling program to find if a shipment is acceptable or not.)  
+Under General Inspection levels 1, 11, 111 ( Commonly used level 11) Normal standards,  Out of state Jobs. Quotes will be made Including Air, Hotel and Car rental expenses
+</p>
+            </div>
+
+          </div>
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+            <img src="assets/img/atelier-bro-1.png" alt="" class="img-fluid">
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Our Testimonials</h2>
+        <p class="fst-italic">
+          At VCRA Product Inspection LLC, we strive to understand our customers’ experiences
+          while working with us so that we can improve our services.
+          Take a look below at what our former and returning clients have to say.  
+          
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+</div>
+      <!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+<!-- 
+          <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+            <li data-filter="*" class="filter-active">All</li>
+            <li data-filter=".filter-app">App</li>
+            <li data-filter=".filter-product">Product</li>
+            <li data-filter=".filter-branding">Branding</li>
+            <li data-filter=".filter-books">Books</li>
+          </ul> -->
+          <!-- End Portfolio Filters -->
+
+          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/portfolio/3.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Image 1</h4>
+                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <a href="assets/img/portfolio/3.jpg" title="Image 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/portfolio/4.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Image 2</h4>
+                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <a href="assets/img/portfolio/4.jpg" title="Image 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/portfolio/5.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Image 3</h4>
+                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <a href="assets/img/portfolio/5.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/portfolio/6.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Image 4</h4>
+                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <a href="assets/img/portfolio/6.jpg" title="image 4" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/portfolio/7.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Image 5</h4>
+                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <a href="assets/img/portfolio/7.jpg" title="Image 5" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <div class="portfolio-content h-100">
+                <img src="assets/img/portfolio/8.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Image 6</h4>
+                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <a href="assets/img/portfolio/8.jpg" title="Image 6" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+              </div>
+            </div><!-- End Portfolio Item -->
+          </div><!-- End Portfolio Container -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Portfolio Section -->
+
+    <!-- Faq Section -->
+    <section id="faq" class="faq section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <!-- <h2>Frequently Asked Questions</h2> -->
+        <p>This is your Testimonial quote. Use this space to share reviews about you, your services, and your business. Get site visitors excited to work with you!</p>
+      </div><!-- End Section Title -->
+
+    </section><!-- /Faq Section -->
+    <section id="contact" class="contact section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="container section-title" data-aos="fade-up">
+          <div class="container section-title" data-aos="fade-up">
+            <h2>Get a Quote</h2>
+        
+          <p>This is your Price Quote section paragraph. Encourage your site visitors and prospective clients to provide their information in order to get a quote for your services.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </p>
+        </div><!-- End Section Title -->
+    
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+              <div class="row gy-4">
+                <div class="col-md-6">
+                  <label for="name-field" class="pb-2">Your Name</label>
+                  <input type="text" name="name" id="name-field" class="form-control" required="">
+                </div>
+    
+                <div class="col-md-6">
+                  <label for="email-field" class="pb-2">Your Email</label>
+                  <input type="email" class="form-control" name="email" id="email-field" required="">
+                </div>
+    
+                <div class="col-md-12">
+                  <label for="subject-field" class="pb-2">Phone</label>
+                  <input type="text" class="form-control" name="subject" id="subject-field" required="">
+                </div>
+    
+                <div class="col-md-12">
+                  <label for="message-field" class="pb-2">Comment</label>
+                  <textarea class="form-control" name="message" rows="10" id="message-field" required=""></textarea>
+                </div>
+    
+                <div class="col-md-12 text-center">
+                  <div class="loading">Loading</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+    
+                  <button type="submit">Submit Comment</button>
+                </div>
+              </div>
+            </form>
+          </div><!-- End Contact Form -->
+          <div class="col-lg-5">
+            <img src="assets/img/portfolio/mention-amico-1.png" class="img-fluid" alt="">
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /Contact Section -->
+
+     <!-- About Section -->
+     <!-- <section id="about" class="section about">
+
+      <div class="container">
+
+        <div class="row gy-3">
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+            <img src="assets/img/about-img.png" alt="" class="img-fluid">
+          </div>
+
+          <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="about-content ps-0 ps-lg-3">
+              <h3>Work With Us</h3>
+              <p>Search current vacancies, sign up for alerts and apply for positions.
+                Experienced individuals with profound Product knowledge. We can analyze and advice best solutions for your Quality Issues.
+              </p>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div> -->
+
+    </section><!-- /About Section -->
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1">VCRA</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        <!-- Designed by Ravindu Liyanagama</a> -->
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script>
+    const showPopupBtn = document.querySelector(".login-btn");
+    const formPopup = document.querySelector(".form-popup");
+    const hidePopupBtn = formPopup.querySelector(".close-btn");
+    const signupLoginLink = formPopup.querySelectorAll(".bottom-link a");
+
+    // Show login popup
+    showPopupBtn.addEventListener("click", () => {
+        document.body.classList.toggle("show-popup");
+    });
+
+    // Hide login popup
+    hidePopupBtn.addEventListener("click", () => showPopupBtn.click());
+
+    // Show or hide signup form
+    signupLoginLink.forEach(link => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            formPopup.classList[link.id === 'signup-link' ? 'add' : 'remove']("show-signup");
+        });
+    });
+  </script>
+
+</body>
+
+</html>
