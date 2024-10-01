@@ -100,44 +100,57 @@
                 <input type="number" id="order" name="order">
             </form>
 
-            
-            <div style="margin: 0 auto; padding: 20px; display: grid; width: 860px; justify-items: center;">
-                <table class="form-table" id="sizeColorTable" style="margin-left: 0px;">
-                    <tr>
-                        <th style="font-weight: bold;font-size: 14px; text-align: center;">Production Order Number</th>
-                        <th style="font-weight: bold;font-size: 14px; text-align: center;">Color</th>
-                        <th style="font-weight: bold;font-size: 14px;"></th>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                </table>
-                <!-- <button class="add-button" style="margin-top: 30px;">Add new</button> -->
-            </div>
-
-            <div class="footer-text" style="text-align: center; margin-bottom: 40px; margin-top: 40px;">
-                Inspection Standard used for this audit is based on AQL US Standards
-                (ANSI/ASQC21.4;NF06-022;BS6001;DIN40080)
-                Single sampling plan for general inspection (LEVEL 11)
-            </div>
     </div>
+
+
+    <section class="Production-Order-Number" style="display: grid; margin: 0 auto; padding-top: 40px; width: 894px;">
+
+        <table id="dynamicTable1" style="width: 100%; margin: 0 auto; table-layout: fixed;">
+            <colgroup>
+                <col style="width: 40%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Production Order Number</th>
+                    <th>Color</th>
+                    <th>Quantity</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Initial Row -->
+                <tr>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        
+        <div style="margin-left: 0px;; margin-top: 10px;">
+            <button onclick="addRowT1()">Add new</button>
+        </div>
+        </table>
+
+    </section>
+
+    <div class="footer-text" style="text-align: center; margin-bottom: 40px; margin-top: 40px;">
+        Inspection Standard used for this audit is based on AQL US Standards
+        (ANSI/ASQC21.4;NF06-022;BS6001;DIN40080)
+        Single sampling plan for general inspection (LEVEL 11)
+    </div>
+
+
+
+
+
+
+
+
 
     <div class="header-container">
         <h2 class="header-text">Size Color Breakdown by P/O</h2>
@@ -174,9 +187,7 @@
                         </td>
                     </tr>
                 </table>
-                <!-- <div class="button class" style="text-align: right; margin-top: 20px; margin-right: 11px;">
-            <button class="upload-button" style="padding-inline: 40px;" type="button" onclick="generatePDF()">Submit</button>
-        </div> -->
+            
             </div>
         </form>
     </div>
@@ -212,7 +223,7 @@
     </div>
     
     <script>
-        let uploadCount = 1; // Starting from 1 since we have an initial image upload section
+        uploadCount = 1; // Starting from 1 since we have an initial image upload section
     
         // Function to handle adding new image upload cards
         function addNewUpload() {
@@ -409,9 +420,11 @@
 
     <section class="measurement-verification" style="display: grid; margin: 0 auto; padding-top: 40px; width: 894px;">
 
-        <table id="dynamicTable1" style="width: 100%; margin: 0 auto; table-layout: fixed;">
+        <table id="dynamicTable" style="width: 100%; margin: 0 auto; table-layout: fixed;">
             <colgroup>
                 <col style="width: 40%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
                 <col style="width: 15%;">
                 <col style="width: 15%;">
                 <col style="width: 15%;">
@@ -420,7 +433,9 @@
             <thead>
                 <tr>
                     <th>Point of Measure</th>
-                    <th>Specs</th>
+                    <th>Size</th>
+                    <th>Tolerance </th>
+                    <th>Spec</th>
                     <th class="empty-column"></th>
                     <th class="empty-column"></th>
                     <th class="empty-column"></th>
@@ -434,13 +449,15 @@
                     <td><input type="text"></td>
                     <td><input type="text"></td>
                     <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
                 </tr>
             </tbody>
         </table>
         
         
         <div style="margin-left: 0px;; margin-top: 10px;">
-            <button onclick="addRowT1()">Add new</button>
+            <button onclick="addRowT0()">Add new</button>
         </div>
         </table>
     </section>
@@ -1236,29 +1253,47 @@
                         y += titleHeight + 10;
                     }
 
+
+                    
                     function addTable(headers, rows) {
-                        return new Promise((resolve) => {
-                            const tableHeightEstimate = rows.length * 10 + 20; // Estimate table height
-                            if (y + tableHeightEstimate > pageHeight - margin) {
-                                doc.addPage();
-                                y = margin;
-                            }
-                            doc.autoTable({
-                                head: [headers],
-                                body: rows,
-                                startY: y,
-                                theme: 'grid',
-                                margin: { top: y },
-                                didDrawPage: function (data) {
-                                    y = data.cursor.y;
-                                },
-                                // After table is drawn, resolve the promise
-                                willDrawCell: function () { },
-                            });
-                            y += 20; // Adjust spacing after table
-                            resolve();
-                        });
-                    }
+    return new Promise((resolve, reject) => {
+        console.log('Adding table with headers:', headers);
+        console.log('Rows data:', rows);
+
+        if (!Array.isArray(rows) || rows.length === 0) {
+            console.warn('No rows data provided for table. Headers:', headers);
+            resolve(); // Resolve without adding the table
+            return;
+        }
+
+        const tableHeightEstimate = rows.length * 10 + 20; // Estimate table height
+        if (y + tableHeightEstimate > pageHeight - margin) {
+            doc.addPage();
+            y = margin;
+        }
+
+        try {
+            doc.autoTable({
+                head: [headers],
+                body: rows,
+                startY: y,
+                theme: 'grid',
+                margin: { top: y },
+                didDrawPage: function (data) {
+                    y = data.cursor.y;
+                },
+                willDrawCell: function () { },
+            });
+            y += 20; // Adjust spacing after table
+            resolve();
+        } catch (error) {
+            console.error('Error adding table:', error);
+            console.error('Headers:', headers);
+            console.error('Rows:', rows);
+            reject(error);
+        }
+    });
+}
 
                     // Helper function to load image as Data URL
                     function loadImage(url) {
@@ -1348,9 +1383,10 @@
                         await addTable(['Label', 'Value'], formRows);
 
                         // Second form
-                        addSectionTitle('Size Color Breakdown by P/O');
-                        const sizeColorRows = collectTableData('#sizeColorTable');
-                        await addTable(['Production Order Number', 'Color', ''], sizeColorRows);
+                        addSectionTitle('Production Order Number');
+                        const productiordernumRows = collectTableData('#dynamicTable1');
+                        await addTable(['Production Order Number', 'Color', 'Quantity',], productiordernumRows);
+
 
                         // Product Pictures Section
 addSectionTitle('Product Pictures');
@@ -1476,10 +1512,11 @@ if (productDetailsForm) {
 
 await addTable(['Description', 'Confirm', 'Not Confirm', 'N/A'], productRows);
 
+
                         // Measurement Verification Sheet
                         addSectionTitle('Measurement Verification Sheet');
-                        const measurementRows = collectTableData('#dynamicTable1');
-                        await addTable(['Point of Measure', 'Specs', '', '', ''], measurementRows);
+                        const measurementRows = collectTableData('#dynamicTable');
+                        await addTable(['Point of Measure', 'Size', 'Tolerance', 'Spec', '', '', ''], measurementRows);
 
                         // Quality Check List On Material & Workmanship
                         addSectionTitle('Quality Check List On Material & Workmanship');
@@ -1653,8 +1690,8 @@ await addTable(['Description', 'Confirm', 'Not Confirm', 'N/A'], productRows);
                     tbody.appendChild(newRow);
                 }
 
-                function addRowT1() {
-                const tableBody = document.querySelector('#dynamicTable1 tbody');
+                function addRowT0() {
+                const tableBody = document.querySelector('#dynamicTable tbody');
                 const newRow = document.createElement('tr');
                 
                 newRow.innerHTML = `
@@ -1663,6 +1700,27 @@ await addTable(['Description', 'Confirm', 'Not Confirm', 'N/A'], productRows);
                     <td><input type="text"></td>
                     <td><input type="text"></td>
                     <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+
+                `;
+                
+                tableBody.appendChild(newRow);
+                //paginateTable();
+                //calculateTotals();
+                }
+
+
+
+                function addRowT1() {
+                const tableBody = document.querySelector('#dynamicTable1 tbody');
+                const newRow = document.createElement('tr');
+                
+                newRow.innerHTML = `
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+
                 `;
                 
                 tableBody.appendChild(newRow);
