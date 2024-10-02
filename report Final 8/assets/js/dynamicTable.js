@@ -1,6 +1,20 @@
-
-// let currentPage = 1;
-// const rowsPerPage = 10;
+// Dynamic Table functions
+function addRowT0() {
+    const tableBody = document.querySelector('#dynamicTable tbody');
+    const newRow = document.createElement('tr');
+    
+    newRow.innerHTML = `
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+    `;
+    
+    tableBody.appendChild(newRow);
+}
 
 function addRowT1() {
     const tableBody = document.querySelector('#dynamicTable1 tbody');
@@ -10,13 +24,9 @@ function addRowT1() {
         <td><input type="text"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
     `;
     
     tableBody.appendChild(newRow);
-    //paginateTable();
-    //calculateTotals();
 }
 
 function addRowT2() {
@@ -31,7 +41,6 @@ function addRowT2() {
     `;
     
     tableBody.appendChild(newRow);
-    //paginateTable();
     calculateTotals();
 }
 
@@ -52,36 +61,3 @@ function calculateTotals() {
     document.getElementById('majorTotal').textContent = majorTotal;
     document.getElementById('minorTotal').textContent = minorTotal;
 }
-
-// function paginateTable() {
-//     const rows = document.querySelectorAll('#dynamicTable tbody tr');
-//     const totalRows = rows.length;
-//     const totalPages = Math.ceil(totalRows / rowsPerPage);
-
-//     rows.forEach((row, index) => {
-//         row.style.display = (index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage) ? '' : 'none';
-//     });
-
-//     if (currentPage > totalPages) {
-//         currentPage = totalPages;
-//     }
-// }
-
-// function nextPage() {
-//     const rows = document.querySelectorAll('#dynamicTable tbody tr').length;
-//     const totalPages = Math.ceil(rows / rowsPerPage);
-//     if (currentPage < totalPages) {
-//         currentPage++;
-//         paginateTable();
-//     }
-// }
-
-// function previousPage() {
-//     if (currentPage > 1) {
-//         currentPage--;
-//         paginateTable();
-//     }
-// }
-
-// Initial call to show the first page
-//paginateTable();

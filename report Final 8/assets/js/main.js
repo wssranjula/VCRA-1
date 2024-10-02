@@ -1,257 +1,445 @@
-/**
-* Template Name: Ninestars
-* Template URL: https://bootstrapmade.com/ninestars-free-bootstrap-3-theme-for-creative/
-* Updated: Mar 23 2024 with Bootstrap v5.3.3
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
+// Global variables
+let uploadCount = 1;
+let photoUploadCount = 1;
 
-(function() {
-  "use strict";
-
-  /**
-   * Apply .scrolled class to the body as the page is scrolled down
-   */
-  function toggleScrolled() {
-    const selectBody = document.querySelector('body');
-    const selectHeader = document.querySelector('#header');
-    if (!selectHeader.classList.contains('scroll-up-sticky') && !selectHeader.classList.contains('sticky-top') && !selectHeader.classList.contains('fixed-top')) return;
-    window.scrollY > 100 ? selectBody.classList.add('scrolled') : selectBody.classList.remove('scrolled');
+// Utility functions
+function handleFileSelect(event, imgElement) {
+  const file = event.target.files[0];
+  if (file && file.type.startsWith("image/")) {
+    const imageURL = URL.createObjectURL(file);
+    imgElement.src = imageURL;
+    imgElement.style.display = "block";
+    imgElement.onload = function () {
+      URL.revokeObjectURL(imgElement.src);
+    };
+  } else {
+    alert("Please select a valid image file.");
   }
-
-  document.addEventListener('scroll', toggleScrolled);
-  window.addEventListener('load', toggleScrolled);
-
-  /**
-   * Mobile nav toggle
-   */
-  const mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
-
-  function mobileNavToogle() {
-    document.querySelector('body').classList.toggle('mobile-nav-active');
-    mobileNavToggleBtn.classList.toggle('bi-list');
-    mobileNavToggleBtn.classList.toggle('bi-x');
-  }
-  mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
-
-  /**
-   * Hide mobile nav on same-page/hash links
-   */
-  document.querySelectorAll('#navmenu a').forEach(navmenu => {
-    navmenu.addEventListener('click', () => {
-      if (document.querySelector('.mobile-nav-active')) {
-        mobileNavToogle();
-      }
-    });
-
+}
+// Helper function to load image as Data URL
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.setAttribute("crossOrigin", "anonymous"); // To avoid CORS issues
+    img.onload = () => {
+      resolve(img);
+    };
+    img.onerror = (err) => {
+      reject(err);
+    };
+    img.src = url;
   });
-
-  /**
-   * Toggle mobile nav dropdowns
-   */
-  document.querySelectorAll('.navmenu .has-dropdown i').forEach(navmenu => {
-    navmenu.addEventListener('click', function(e) {
-      if (document.querySelector('.mobile-nav-active')) {
-        e.preventDefault();
-        this.parentNode.classList.toggle('active');
-        this.parentNode.nextElementSibling.classList.toggle('dropdown-active');
-        e.stopImmediatePropagation();
-      }
-    });
-  });
-
-  /**
-   * Preloader
-   */
-  const preloader = document.querySelector('#preloader');
-  if (preloader) {
-    window.addEventListener('load', () => {
-      preloader.remove();
-    });
-  }
-
-  /**
-   * Scroll top button
-   */
-  let scrollTop = document.querySelector('.scroll-top');
-
-  function toggleScrollTop() {
-    if (scrollTop) {
-      window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
-    }
-  }
-  scrollTop.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-
-  window.addEventListener('load', toggleScrollTop);
-  document.addEventListener('scroll', toggleScrollTop);
-
-  /**
-   * Animation on scroll function and init
-   */
-  function aosInit() {
-    AOS.init({
-      duration: 600,
-      easing: 'ease-in-out',
-      once: true,
-      mirror: false
-    });
-  }
-  window.addEventListener('load', aosInit);
-
-  /**
-   * Initiate glightbox
-   */
-  const glightbox = GLightbox({
-    selector: '.glightbox'
-  });
-
-  /**
-   * Init isotope layout and filters
-   */
-  document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
-    let layout = isotopeItem.getAttribute('data-layout') ?? 'masonry';
-    let filter = isotopeItem.getAttribute('data-default-filter') ?? '*';
-    let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
-
-    let initIsotope;
-    imagesLoaded(isotopeItem.querySelector('.isotope-container'), function() {
-      initIsotope = new Isotope(isotopeItem.querySelector('.isotope-container'), {
-        itemSelector: '.isotope-item',
-        layoutMode: layout,
-        filter: filter,
-        sortBy: sort
-      });
-    });
-
-    isotopeItem.querySelectorAll('.isotope-filters li').forEach(function(filters) {
-      filters.addEventListener('click', function() {
-        isotopeItem.querySelector('.isotope-filters .filter-active').classList.remove('filter-active');
-        this.classList.add('filter-active');
-        initIsotope.arrange({
-          filter: this.getAttribute('data-filter')
-        });
-        if (typeof aosInit === 'function') {
-          aosInit();
-        }
-      }, false);
-    });
-
-  });
-
-  /**
-   * Frequently Asked Questions Toggle
-   */
-  document.querySelectorAll('.faq-item h3, .faq-item .faq-toggle').forEach((faqItem) => {
-    faqItem.addEventListener('click', () => {
-      faqItem.parentNode.classList.toggle('faq-active');
-    });
-  });
-
-  /**
-   * Init swiper sliders
-   */
-  function initSwiper() {
-    document.querySelectorAll('.swiper').forEach(function(swiper) {
-      let config = JSON.parse(swiper.querySelector('.swiper-config').innerHTML.trim());
-      new Swiper(swiper, config);
-    });
-  }
-  window.addEventListener('load', initSwiper);
-
-  /**
-   * Correct scrolling position upon page load for URLs containing hash links.
-   */
-  window.addEventListener('load', function(e) {
-    if (window.location.hash) {
-      const section = document.querySelector(window.location.hash);
-      if (section) {
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-    }
-  });
-
-  /**
-   * Auto-Active Navmenu Links
-   */
-  let navmenulinks = document.querySelectorAll('.navmenu a');
-
-  function navmenuActive() {
-    navmenulinks.forEach(navmenulink => {
-      if (!navmenulink.hash) return;
-      let section = document.querySelector(navmenulink.hash);
-      if (!section) return;
-      let position = window.scrollY + 200;
-      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
-        document.querySelectorAll('.navmenu a.active').forEach(link => link.classList.remove('active'));
-        navmenulink.classList.add('active');
-      } else {
-        navmenulink.classList.remove('active');
-      }
-    })
-  }
-  window.addEventListener('load', navmenuActive);
-  document.addEventListener('scroll', navmenuActive);
-
-})();
-
-
-// function for dropdown of input fields under Measurement Verification Sheet
-
-function addInput(type) {
-  const container = document.getElementById(`${type}-input-container`);
-  
-  // Create a new input element
-  const newInput = document.createElement('input');
-  newInput.type = 'text';
-  newInput.placeholder = `Enter ${type}`;
-  
-  // Append the new input to the container
-  container.appendChild(newInput);
 }
 
-function submitInput(type) {
-  const container = document.getElementById(`${type}-input-container`);
-  const inputValue = container.querySelector('input').value;
-  console.log(`${type} submitted: `, inputValue);
-  container.innerHTML = '';  // Clear the input after submission
+// Product Pictures functions
+function addNewUpload() {
+  uploadCount++;
+  const container = document.getElementById("imageUploadContainer");
+
+  const newCardContainer = document.createElement("div");
+  newCardContainer.classList.add("card-container");
+
+  const newCard = document.createElement("div");
+  newCard.classList.add("card");
+  newCard.style.width = "200px";
+  newCard.style.height = "200px";
+  newCard.style.border = "1px solid #ccc";
+  newCard.style.cursor = "pointer";
+
+  const newImg = document.createElement("img");
+  newImg.id = `image${uploadCount}`;
+  newImg.alt = `Preview Image ${uploadCount}`;
+  newImg.style.width = "100%";
+  newImg.style.height = "100%";
+  newImg.style.objectFit = "cover";
+  newImg.style.display = "none";
+
+  const newInput = document.createElement("input");
+  newInput.type = "file";
+  newInput.accept = "image/*";
+  newInput.id = `input-file${uploadCount}`;
+  newInput.style.display = "none";
+
+  newCard.addEventListener("click", function () {
+    newInput.click();
+  });
+
+  newCard.appendChild(newImg);
+  newCard.appendChild(newInput);
+
+  const newCommentBox = document.createElement("textarea");
+  newCommentBox.id = `comment${uploadCount}`;
+  newCommentBox.placeholder = "Add a note...";
+  newCommentBox.style.width = "200px";
+  newCommentBox.style.height = "50px";
+  newCommentBox.style.marginTop = "10px";
+
+  newCardContainer.appendChild(newCard);
+  newCardContainer.appendChild(newCommentBox);
+
+  container.appendChild(newCardContainer);
+
+  newInput.addEventListener("change", function (event) {
+    handleFileSelect(event, newImg);
+  });
 }
 
-//previews for image uploads
-function previewImage(event, imgId) {
-  const reader = new FileReader();
-  reader.onload = function() {
-      const output = document.getElementById(imgId);
-      output.src = reader.result;
-      output.style.display = 'block';
-      output.nextElementSibling.style.display = 'none';  // Hide the upload icon
-  }
-  reader.readAsDataURL(event.target.files[0]);
+function uploadImages() {
+  // Implement image upload functionality here
+  console.log("Uploading images...");
 }
 
-function generatePDF() {
-  // Collecting form data
-  const form = document.getElementById('inspectionForm');
-  const formData = new FormData(form);
-  
-  // Creating a PDF document
+// Defect Pictures functions
+function addNewPhotoUpload() {
+  photoUploadCount++;
+  const container = document.getElementById("photoUploadContainer");
+
+  const newCardContainer = document.createElement("div");
+  newCardContainer.classList.add("card-container");
+
+  const newCard = document.createElement("div");
+  newCard.classList.add("card");
+  newCard.style.width = "200px";
+  newCard.style.height = "200px";
+  newCard.style.border = "1px solid #ccc";
+  newCard.style.cursor = "pointer";
+
+  const newImg = document.createElement("img");
+  newImg.id = `photo${photoUploadCount}`;
+  newImg.alt = `Preview Photo ${photoUploadCount}`;
+  newImg.style.width = "100%";
+  newImg.style.height = "100%";
+  newImg.style.objectFit = "cover";
+  newImg.style.display = "none";
+
+  const newInput = document.createElement("input");
+  newInput.type = "file";
+  newInput.accept = "image/*";
+  newInput.id = `input-photo${photoUploadCount}`;
+  newInput.style.display = "none";
+
+  newCard.addEventListener("click", function () {
+    newInput.click();
+  });
+
+  newCard.appendChild(newImg);
+  newCard.appendChild(newInput);
+
+  const newCommentBox = document.createElement("textarea");
+  newCommentBox.id = `photoComment${photoUploadCount}`;
+  newCommentBox.placeholder = "Add a note...";
+  newCommentBox.style.width = "200px";
+  newCommentBox.style.height = "50px";
+  newCommentBox.style.marginTop = "10px";
+
+  newCardContainer.appendChild(newCard);
+  newCardContainer.appendChild(newCommentBox);
+
+  container.appendChild(newCardContainer);
+
+  newInput.addEventListener("change", function (event) {
+    handleFileSelect(event, newImg);
+  });
+}
+
+function uploadPhotos() {
+  // Implement photo upload functionality here
+  console.log("Uploading photos...");
+}
+
+// PDF Generation
+async function generatePDF() {
+  const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
+  const pageHeight = doc.internal.pageSize.height;
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const margin = 20;
+  let y = margin;
 
-  // Adding form data to the PDF
-  let y = 10; // y-axis position for text
-  formData.forEach((value, key) => {
-      doc.text(`${key}: ${value}`, 10, y);
-      y += 10; // incrementing y-axis for next line
+  function addSectionTitle(title) {
+    const titleHeight = 10;
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text(title, pageWidth / 2, y, { align: "center" });
+    y += titleHeight + 5;
+  }
+
+  function addTable(headers, rows) {
+    return new Promise((resolve) => {
+      if (!Array.isArray(rows) || rows.length === 0) {
+        console.warn("No rows data provided for table. Headers:", headers);
+        resolve();
+        return;
+      }
+
+      const tableHeightEstimate = rows.length * 10 + 20;
+      if (y + tableHeightEstimate > pageHeight - margin) {
+        doc.addPage();
+        y = margin;
+      }
+
+      doc.autoTable({
+        head: [headers],
+        body: rows,
+        startY: y,
+        theme: "grid",
+        margin: { top: y },
+        didDrawPage: function (data) {
+          y = data.cursor.y;
+        },
+      });
+      y += 10;
+      resolve();
+    });
+  }
+
+  function collectFormData(formId) {
+    const form = document.getElementById(formId);
+    const formData = new FormData(form);
+    const formRows = [];
+    formData.forEach((value, key) => {
+      const label = form.querySelector(`label[for="${key}"]`)?.innerText || key;
+      formRows.push([label, value]);
+    });
+    return formRows;
+  }
+
+  function collectTableData(tableSelector, skipHeader = true) {
+    const table = document.querySelector(tableSelector);
+    const tableRows = [];
+    if (table) {
+      const rows = table.getElementsByTagName("tr");
+      for (let i = skipHeader ? 1 : 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        const rowData = [];
+        for (let j = 0; j < cells.length; j++) {
+          const input = cells[j].querySelector("input");
+          rowData.push(input ? input.value || "" : cells[j].innerText.trim());
+        }
+        tableRows.push(rowData);
+      }
+    } else {
+      console.error(`Table element "${tableSelector}" not found.`);
+    }
+    return tableRows;
+  }
+
+  function collectRadioData(containerSelector) {
+    const container = document.querySelector(containerSelector);
+    const rows = [];
+    if (container) {
+      container.querySelectorAll("tr").forEach((row) => {
+        const description = row.querySelector("td")?.textContent.trim();
+        const confirm = row.querySelector('input[value="confirm"]')?.checked
+          ? "X"
+          : "";
+        const notConfirm = row.querySelector('input[value="notConfirm"]')
+          ?.checked
+          ? "X"
+          : "";
+        const na = row.querySelector('input[value="na"]')?.checked ? "X" : "";
+        const comments = row.querySelector('input[type="text"]')?.value || "";
+        rows.push([description, confirm, notConfirm, na, comments]);
+      });
+    }
+    return rows;
+  }
+
+  async function addImages(containerSelector, title) {
+    addSectionTitle(title);
+    const container = document.querySelector(containerSelector);
+    const images = container.querySelectorAll('img');
+    const comments = container.querySelectorAll('textarea');
+    
+    const maxWidth = (pageWidth - 3 * margin) / 2; // Width for each image
+    const maxHeight = 100; // Maximum height for images
+    
+    for (let i = 0; i < images.length; i += 2) {
+        if (y + maxHeight + 30 > pageHeight - margin) {
+            doc.addPage();
+            y = margin;
+        }
+        
+        for (let j = 0; j < 2; j++) {
+            if (i + j < images.length && images[i + j].src) {
+                try {
+                    const img = images[i + j];
+                    const imgData = await getBase64Image(img);
+                    
+                    // Calculate dimensions to maintain aspect ratio
+                    let imgWidth = img.naturalWidth;
+                    let imgHeight = img.naturalHeight;
+                    const ratio = Math.min(maxWidth / imgWidth, maxHeight / imgHeight);
+                    imgWidth *= ratio;
+                    imgHeight *= ratio;
+                    
+                    const xOffset = j * (maxWidth + margin);
+                    doc.addImage(imgData, 'JPEG', margin + xOffset, y, imgWidth, imgHeight);
+                    
+                    // Add comment below the image
+                    const comment = comments[i + j].value;
+                    doc.setFontSize(10);
+                    doc.text(comment, margin + xOffset, y + imgHeight + 5, { 
+                        maxWidth: maxWidth,
+                        align: 'left'
+                    });
+                    
+                } catch (error) {
+                    console.error('Error adding image to PDF:', error);
+                }
+            }
+        }
+        
+        y += maxHeight + 30; // Move to next row
+    }
+    
+    y += 10; // Add some space after the images section
+}
+
+function getBase64Image(img) {
+    return new Promise((resolve, reject) => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        }, 'image/jpeg');
+    });
+}
+
+  try {
+    // Add logo and title
+    const logoURL = "assets/img/logo.png";
+    const logoImg = await loadImage(logoURL);
+    const logoWidth = 40;
+    const logoHeight = 20;
+    doc.addImage(
+      logoImg,
+      "PNG",
+      pageWidth / 2 - logoWidth / 2,
+      10,
+      logoWidth,
+      logoHeight
+    );
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("VCRA PRODUCT INSPECTION REPORT", pageWidth / 2, 35, {
+      align: "center",
+    });
+    y = 50;
+
+    // Inspection Form Details
+    addSectionTitle("Inspection Form Details");
+    const formRows = collectFormData("inspectionForm");
+    await addTable(["Label", "Value"], formRows);
+
+    // Production Order Number
+    addSectionTitle("Production Order Number");
+    const productionOrderRows = collectTableData("#dynamicTable1");
+    await addTable(
+      ["Production Order Number", "Color", "Quantity"],
+      productionOrderRows
+    );
+
+    // AQL and Sample Size
+    addSectionTitle("AQL and Sample Size");
+    const aqlFormRows = collectFormData("thirdform");
+    await addTable(["Label", "Value"], aqlFormRows);
+
+    // Product Pictures
+    await addImages("#imageUploadContainer", "Product Pictures");
+
+    // Product Details Verification
+    addSectionTitle("Product Details Verification");
+    const productDetailsRows = collectRadioData(
+      ".product-details-verification table"
+    );
+    await addTable(
+      ["Description", "Confirm", "Not Confirm", "N/A"],
+      productDetailsRows
+    );
+
+    // Measurement Verification Sheet
+    addSectionTitle("Measurement Verification Sheet");
+    const measurementRows = collectTableData("#dynamicTable");
+    await addTable(
+      ["Point of Measure", "Size", "Tolerance", "Spec", "", "", ""],
+      measurementRows
+    );
+
+    // Quality Check List
+    addSectionTitle("Quality Check List On Material & Workmanship");
+    const qualityRows = collectTableData("#dynamicTable2");
+    await addTable(
+      ["Material & Workmanship Details", "Critical", "Major", "Minor"],
+      qualityRows
+    );
+
+    // Appearance and Packing
+    addSectionTitle("Appearance and Packing");
+    const appearanceRows = collectRadioData("#form1111");
+    await addTable(
+      ["Description", "Confirm", "Not Confirm", "N/A", "Comments"],
+      appearanceRows
+    );
+
+    // Material
+    addSectionTitle("Material");
+    const materialRows = collectRadioData("#formmaterial");
+    await addTable(
+      ["Description", "Confirm", "Not Confirm", "N/A", "Comments"],
+      materialRows
+    );
+
+    // Accessories & Trims
+    addSectionTitle("Accessories & Trims");
+    const accessoriesRows = collectRadioData("#accessories-trims-form");
+    await addTable(
+      ["Description", "Confirm", "Not Confirm", "N/A", "Comments"],
+      accessoriesRows
+    );
+
+    // Defect Pictures
+    await addImages("#photoUploadContainer", "Defect Pictures");
+
+    // Inspection Result
+    addSectionTitle("Inspection Result");
+    const inspectionResult = document.querySelector(
+      '.button-group input[type="radio"]:checked'
+    );
+    const resultText = inspectionResult
+      ? inspectionResult.parentElement.textContent.trim()
+      : "No option selected";
+    await addTable(["Inspection Result"], [[resultText]]);
+
+    // Save the PDF
+    doc.save("VCRA-Product-Inspection-Report.pdf");
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    alert(
+      "An error occurred while generating the PDF. Please check the console for details."
+    );
+  }
+}
+
+// Event Listeners
+document.addEventListener("DOMContentLoaded", function () {
+  const inputFile1 = document.getElementById("input-file1");
+  const image1 = document.getElementById("image1");
+
+  inputFile1.addEventListener("change", function (event) {
+    handleFileSelect(event, image1);
   });
 
-  // Saving the PDF
-  doc.save('form-data.pdf');
-}
+  const inputPhoto1 = document.getElementById("input-photo1");
+  const photo1 = document.getElementById("photo1");
+
+  inputPhoto1.addEventListener("change", function (event) {
+    handleFileSelect(event, photo1);
+  });
+});
