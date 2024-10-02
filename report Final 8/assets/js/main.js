@@ -193,7 +193,7 @@ async function generatePDF() {
     y = 25;
   }
 
-  async function addTable(headers, rows) {
+  async function addTable(headers, rows, emptyHeaders = false) {
     return new Promise((resolve) => {
       if (!Array.isArray(rows) || rows.length === 0) {
         console.warn("No rows data provided for table. Headers:", headers);
@@ -201,11 +201,13 @@ async function generatePDF() {
         return;
       }
 
+      let tableHeaders = emptyHeaders ? [] : headers;
+
       doc.autoTable({
-        head: [headers],
+        head: tableHeaders.length > 0 ? [tableHeaders] : undefined,
         body: rows,
         startY: y,
-        theme: "grid",
+        theme: 'grid',
         styles: {
           fontSize: 9,
           cellPadding: 3,
@@ -213,7 +215,7 @@ async function generatePDF() {
         headStyles: {
           fillColor: primaryColor,
           textColor: [255, 255, 255],
-          fontStyle: "bold",
+          fontStyle: 'bold',
         },
         alternateRowStyles: {
           fillColor: [245, 245, 245],
@@ -227,6 +229,7 @@ async function generatePDF() {
       resolve();
     });
   }
+
 
   async function addImages(containerSelector, title) {
     // Always start a new page for image sections
@@ -334,19 +337,22 @@ async function generatePDF() {
     const container = document.querySelector(containerSelector);
     const rows = [];
     if (container) {
-      container.querySelectorAll("tr").forEach((row) => {
+      const tableRows = container.querySelectorAll("tr");
+      
+      // Start from index 1 to skip the header row
+      for (let i = 1; i < tableRows.length; i++) {
+        const row = tableRows[i];
         const description = row.querySelector("td")?.textContent.trim();
-        const confirm = row.querySelector('input[value="confirm"]')?.checked
-          ? "X"
-          : "";
-        const notConfirm = row.querySelector('input[value="notConfirm"]')
-          ?.checked
-          ? "X"
-          : "";
-        const na = row.querySelector('input[value="na"]')?.checked ? "X" : "";
-        const comments = row.querySelector('input[type="text"]')?.value || "";
-        rows.push([description, confirm, notConfirm, na, comments]);
-      });
+        
+        // Only process the row if there's a description (to avoid empty rows)
+        if (description) {
+          const confirm = row.querySelector('input[value="confirm"]')?.checked ? "X" : "";
+          const notConfirm = row.querySelector('input[value="notConfirm"]')?.checked ? "X" : "";
+          const na = row.querySelector('input[value="na"]')?.checked ? "X" : "";
+          const comments = row.querySelector('input[type="text"]')?.value || "";
+          rows.push([description, confirm, notConfirm, na, comments]);
+        }
+      }
     }
     return rows;
   }
@@ -390,19 +396,20 @@ async function generatePDF() {
     addPageHeader();
 
     // Function to add a section with title and table
-    async function addSection(title, headers, rows) {
+    async function addSection(title, headers, rows, emptyHeaders = false) {
       const contentHeight = (rows.length + 1) * 10 + 40; // Estimate height
       if (checkPageBreak(contentHeight)) {
         y += 10; // Add some space at the top of the new page
       }
       addSectionTitle(title);
-      await addTable(headers, rows);
+      await addTable(headers, rows, emptyHeaders);
     }
 
+
     // Add sections
-    await addSection("Inspection Form Details", ["Label", "Value"], collectFormData("inspectionForm"));
+    await addSection("Inspection Form Details", [], collectFormData("inspectionForm"), true); // Note the empty headers array and 'true' parameter
     await addSection("Production Order Number", ["Production Order Number", "Color", "Quantity"], collectTableData("#dynamicTable1"));
-    await addSection("AQL and Sample Size", ["Label", "Value"], collectFormData("thirdform"));
+    await addSection("AQL and Sample Size", [], collectFormData("thirdform"), true);
     
     // Product Pictures always start on a new page
     await addImages("#imageUploadContainer", "Product Pictures");
