@@ -148,6 +148,7 @@ function uploadPhotos() {
 }
 
 // PDF Generation
+// PDF Generation
 async function generatePDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -160,11 +161,20 @@ async function generatePDF() {
     const titleHeight = 10;
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text(title, pageWidth / 2, y, { align: "center" });
-    y += titleHeight + 5;
+    doc.text(title, margin, y);
+    y += titleHeight + 2; // Reduced space after title
   }
 
-  function addTable(headers, rows) {
+  function checkPageBreak(contentHeight) {
+    if (y + contentHeight > pageHeight - margin) {
+      doc.addPage();
+      y = margin;
+      return true;
+    }
+    return false;
+  }
+
+  async function addTable(headers, rows) {
     return new Promise((resolve) => {
       if (!Array.isArray(rows) || rows.length === 0) {
         console.warn("No rows data provided for table. Headers:", headers);
@@ -173,22 +183,24 @@ async function generatePDF() {
       }
 
       const tableHeightEstimate = rows.length * 10 + 20;
-      if (y + tableHeightEstimate > pageHeight - margin) {
-        doc.addPage();
-        y = margin;
-      }
-
+      
       doc.autoTable({
         head: [headers],
         body: rows,
         startY: y,
         theme: "grid",
-        margin: { top: y },
+        margin: { top: y, bottom: margin },
         didDrawPage: function (data) {
           y = data.cursor.y;
         },
+        willDrawCell: function(data) {
+          if (data.row.index === 0 && data.section === 'head') {
+            doc.setTextColor(255, 255, 255);
+            doc.setFillColor(100, 100, 100);
+          }
+        }
       });
-      y += 10;
+      y = doc.lastAutoTable.finalY + 10;
       resolve();
     });
   }
@@ -251,16 +263,16 @@ async function generatePDF() {
     const images = container.querySelectorAll('img');
     const comments = container.querySelectorAll('textarea');
     
-    const maxWidth = (pageWidth - 3 * margin) / 2; // Width for each image
+    const maxWidth = (pageWidth - 5 * margin) / 4; // Width for each image
     const maxHeight = 100; // Maximum height for images
     
-    for (let i = 0; i < images.length; i += 2) {
+    for (let i = 0; i < images.length; i += 4) {
         if (y + maxHeight + 30 > pageHeight - margin) {
             doc.addPage();
             y = margin;
         }
         
-        for (let j = 0; j < 2; j++) {
+        for (let j = 0; j < 4; j++) {
             if (i + j < images.length && images[i + j].src) {
                 try {
                     const img = images[i + j];
@@ -294,23 +306,30 @@ async function generatePDF() {
     }
     
     y += 10; // Add some space after the images section
-}
+  }
 
-function getBase64Image(img) {
+  function getBase64Image(img) {
     return new Promise((resolve, reject) => {
-        const canvas = document.createElement("canvas");
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-        canvas.toBlob((blob) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-        }, 'image/jpeg');
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob((blob) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      }, 'image/jpeg');
     });
-}
+  }
+
+  function checkPageBreak(contentHeight) {
+    if (y + contentHeight > pageHeight - margin) {
+      doc.addPage();
+      y = margin;
+    }
+  }
 
   try {
     // Add logo and title
@@ -333,97 +352,65 @@ function getBase64Image(img) {
     });
     y = 50;
 
+    // Function to add a section with title and table
+    async function addSection(title, headers, rows) {
+      const contentHeight = (rows.length + 1) * 10 + 30; // Estimate height
+      if (checkPageBreak(contentHeight)) {
+        y += 10; // Add some space at the top of the new page
+      }
+      addSectionTitle(title);
+      await addTable(headers, rows);
+    }
+
     // Inspection Form Details
-    addSectionTitle("Inspection Form Details");
-    const formRows = collectFormData("inspectionForm");
-    await addTable(["Label", "Value"], formRows);
+    await addSection("Inspection Form Details", ["Label", "Value"], collectFormData("inspectionForm"));
 
     // Production Order Number
-    addSectionTitle("Production Order Number");
-    const productionOrderRows = collectTableData("#dynamicTable1");
-    await addTable(
-      ["Production Order Number", "Color", "Quantity"],
-      productionOrderRows
-    );
+    await addSection("Production Order Number", ["Production Order Number", "Color", "Quantity"], collectTableData("#dynamicTable1"));
 
     // AQL and Sample Size
-    addSectionTitle("AQL and Sample Size");
-    const aqlFormRows = collectFormData("thirdform");
-    await addTable(["Label", "Value"], aqlFormRows);
+    await addSection("AQL and Sample Size", ["Label", "Value"], collectFormData("thirdform"));
 
     // Product Pictures
+    if (checkPageBreak(150)) {
+      y += 10;
+    }
     await addImages("#imageUploadContainer", "Product Pictures");
 
     // Product Details Verification
-    addSectionTitle("Product Details Verification");
-    const productDetailsRows = collectRadioData(
-      ".product-details-verification table"
-    );
-    await addTable(
-      ["Description", "Confirm", "Not Confirm", "N/A"],
-      productDetailsRows
-    );
+    await addSection("Product Details Verification", ["Description", "Confirm", "Not Confirm", "N/A"], collectRadioData(".product-details-verification table"));
 
     // Measurement Verification Sheet
-    addSectionTitle("Measurement Verification Sheet");
-    const measurementRows = collectTableData("#dynamicTable");
-    await addTable(
-      ["Point of Measure", "Size", "Tolerance", "Spec", "", "", ""],
-      measurementRows
-    );
+    await addSection("Measurement Verification Sheet", ["Point of Measure", "Size", "Tolerance", "Spec", "", "", ""], collectTableData("#dynamicTable"));
 
     // Quality Check List
-    addSectionTitle("Quality Check List On Material & Workmanship");
-    const qualityRows = collectTableData("#dynamicTable2");
-    await addTable(
-      ["Material & Workmanship Details", "Critical", "Major", "Minor"],
-      qualityRows
-    );
+    await addSection("Quality Check List On Material & Workmanship", ["Material & Workmanship Details", "Critical", "Major", "Minor"], collectTableData("#dynamicTable2"));
 
     // Appearance and Packing
-    addSectionTitle("Appearance and Packing");
-    const appearanceRows = collectRadioData("#form1111");
-    await addTable(
-      ["Description", "Confirm", "Not Confirm", "N/A", "Comments"],
-      appearanceRows
-    );
+    await addSection("Appearance and Packing", ["Description", "Confirm", "Not Confirm", "N/A", "Comments"], collectRadioData("#form1111"));
 
     // Material
-    addSectionTitle("Material");
-    const materialRows = collectRadioData("#formmaterial");
-    await addTable(
-      ["Description", "Confirm", "Not Confirm", "N/A", "Comments"],
-      materialRows
-    );
+    await addSection("Material", ["Description", "Confirm", "Not Confirm", "N/A", "Comments"], collectRadioData("#formmaterial"));
 
     // Accessories & Trims
-    addSectionTitle("Accessories & Trims");
-    const accessoriesRows = collectRadioData("#accessories-trims-form");
-    await addTable(
-      ["Description", "Confirm", "Not Confirm", "N/A", "Comments"],
-      accessoriesRows
-    );
+    await addSection("Accessories & Trims", ["Description", "Confirm", "Not Confirm", "N/A", "Comments"], collectRadioData("#accessories-trims-form"));
 
     // Defect Pictures
+    if (checkPageBreak(150)) {
+      y += 10;
+    }
     await addImages("#photoUploadContainer", "Defect Pictures");
 
     // Inspection Result
-    addSectionTitle("Inspection Result");
-    const inspectionResult = document.querySelector(
-      '.button-group input[type="radio"]:checked'
-    );
-    const resultText = inspectionResult
-      ? inspectionResult.parentElement.textContent.trim()
-      : "No option selected";
-    await addTable(["Inspection Result"], [[resultText]]);
+    const inspectionResult = document.querySelector('.button-group input[type="radio"]:checked');
+    const resultText = inspectionResult ? inspectionResult.parentElement.textContent.trim() : "No option selected";
+    await addSection("Inspection Result", ["Inspection Result"], [[resultText]]);
 
     // Save the PDF
     doc.save("VCRA-Product-Inspection-Report.pdf");
   } catch (error) {
     console.error("Error generating PDF:", error);
-    alert(
-      "An error occurred while generating the PDF. Please check the console for details."
-    );
+    alert("An error occurred while generating the PDF. Please check the console for details.");
   }
 }
 
