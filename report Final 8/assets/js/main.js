@@ -157,21 +157,40 @@ async function generatePDF() {
   const margin = 20;
   let y = margin;
 
+  // Define colors
+  const primaryColor = [0, 123, 255]; // Blue
+  const secondaryColor = [108, 117, 125]; // Gray
+
   function addSectionTitle(title) {
-    const titleHeight = 10;
-    doc.setFontSize(14);
+    doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
+    doc.setTextColor(...primaryColor);
     doc.text(title, margin, y);
-    y += titleHeight + 2; // Reduced space after title
+    y += 10;
+    
+    // Add an underline
+    doc.setDrawColor(...primaryColor);
+    doc.setLineWidth(0.5);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 5;
   }
 
   function checkPageBreak(contentHeight) {
     if (y + contentHeight > pageHeight - margin) {
       doc.addPage();
       y = margin;
+      addPageHeader();
       return true;
     }
     return false;
+  }
+
+  function addPageHeader() {
+    doc.setFontSize(10);
+    doc.setTextColor(...secondaryColor);
+    doc.text("VCRA PRODUCT INSPECTION REPORT", pageWidth - margin, 10, { align: "right" });
+    doc.line(margin, 15, pageWidth - margin, 15);
+    y = 25;
   }
 
   async function addTable(headers, rows) {
@@ -182,26 +201,101 @@ async function generatePDF() {
         return;
       }
 
-      const tableHeightEstimate = rows.length * 10 + 20;
-      
       doc.autoTable({
         head: [headers],
         body: rows,
         startY: y,
         theme: "grid",
+        styles: {
+          fontSize: 9,
+          cellPadding: 3,
+        },
+        headStyles: {
+          fillColor: primaryColor,
+          textColor: [255, 255, 255],
+          fontStyle: "bold",
+        },
+        alternateRowStyles: {
+          fillColor: [245, 245, 245],
+        },
         margin: { top: y, bottom: margin },
         didDrawPage: function (data) {
-          y = data.cursor.y;
+          addPageHeader();
         },
-        willDrawCell: function(data) {
-          if (data.row.index === 0 && data.section === 'head') {
-            doc.setTextColor(255, 255, 255);
-            doc.setFillColor(100, 100, 100);
-          }
-        }
       });
       y = doc.lastAutoTable.finalY + 10;
       resolve();
+    });
+  }
+
+  async function addImages(containerSelector, title) {
+    // Always start a new page for image sections
+    doc.addPage();
+    y = margin;
+    addPageHeader();
+
+    addSectionTitle(title);
+    const container = document.querySelector(containerSelector);
+    const images = container.querySelectorAll('img');
+    const comments = container.querySelectorAll('textarea');
+    
+    const maxWidth = (pageWidth - 5 * margin) / 2; // Width for each image (2 per row)
+    const maxHeight = 80; // Maximum height for images
+    
+    for (let i = 0; i < images.length; i += 2) {
+      if (checkPageBreak(maxHeight + 40)) {
+        y += 10; // Add some space at the top of the new page
+      }
+      
+      for (let j = 0; j < 2; j++) {
+        if (i + j < images.length && images[i + j].src) {
+          try {
+            const img = images[i + j];
+            const imgData = await getBase64Image(img);
+            
+            // Calculate dimensions to maintain aspect ratio
+            let imgWidth = img.naturalWidth;
+            let imgHeight = img.naturalHeight;
+            const ratio = Math.min(maxWidth / imgWidth, maxHeight / imgHeight);
+            imgWidth *= ratio;
+            imgHeight *= ratio;
+            
+            const xOffset = j * (maxWidth + margin);
+            doc.addImage(imgData, 'JPEG', margin + xOffset, y, imgWidth, imgHeight);
+            
+            // Add comment below the image
+            const comment = comments[i + j].value;
+            doc.setFontSize(8);
+            doc.setTextColor(...secondaryColor);
+            doc.text(comment, margin + xOffset, y + imgHeight + 5, { 
+              maxWidth: maxWidth,
+              align: 'left'
+            });
+          } catch (error) {
+            console.error('Error adding image to PDF:', error);
+          }
+        }
+      }
+      
+      y += maxHeight + 30; // Move to next row
+    }
+    
+    y += 10; // Add some space after the images section
+  }
+
+  function getBase64Image(img) {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob((blob) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      }, 'image/jpeg');
     });
   }
 
@@ -257,104 +351,47 @@ async function generatePDF() {
     return rows;
   }
 
-  async function addImages(containerSelector, title) {
-    addSectionTitle(title);
-    const container = document.querySelector(containerSelector);
-    const images = container.querySelectorAll('img');
-    const comments = container.querySelectorAll('textarea');
-    
-    const maxWidth = (pageWidth - 5 * margin) / 4; // Width for each image
-    const maxHeight = 100; // Maximum height for images
-    
-    for (let i = 0; i < images.length; i += 4) {
-        if (y + maxHeight + 30 > pageHeight - margin) {
-            doc.addPage();
-            y = margin;
-        }
-        
-        for (let j = 0; j < 4; j++) {
-            if (i + j < images.length && images[i + j].src) {
-                try {
-                    const img = images[i + j];
-                    const imgData = await getBase64Image(img);
-                    
-                    // Calculate dimensions to maintain aspect ratio
-                    let imgWidth = img.naturalWidth;
-                    let imgHeight = img.naturalHeight;
-                    const ratio = Math.min(maxWidth / imgWidth, maxHeight / imgHeight);
-                    imgWidth *= ratio;
-                    imgHeight *= ratio;
-                    
-                    const xOffset = j * (maxWidth + margin);
-                    doc.addImage(imgData, 'JPEG', margin + xOffset, y, imgWidth, imgHeight);
-                    
-                    // Add comment below the image
-                    const comment = comments[i + j].value;
-                    doc.setFontSize(10);
-                    doc.text(comment, margin + xOffset, y + imgHeight + 5, { 
-                        maxWidth: maxWidth,
-                        align: 'left'
-                    });
-                    
-                } catch (error) {
-                    console.error('Error adding image to PDF:', error);
-                }
-            }
-        }
-        
-        y += maxHeight + 30; // Move to next row
-    }
-    
-    y += 10; // Add some space after the images section
-  }
-
-  function getBase64Image(img) {
+  async function loadImage(url) {
     return new Promise((resolve, reject) => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0);
-      canvas.toBlob((blob) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      }, 'image/jpeg');
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = url;
     });
   }
 
-  function checkPageBreak(contentHeight) {
-    if (y + contentHeight > pageHeight - margin) {
-      doc.addPage();
-      y = margin;
-    }
-  }
-
   try {
-    // Add logo and title
+    // Add cover page
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(24);
+    doc.text("VCRA PRODUCT", pageWidth / 2, pageHeight / 2 - 20, { align: "center" });
+    doc.text("INSPECTION REPORT", pageWidth / 2, pageHeight / 2 + 10, { align: "center" });
+    doc.setFontSize(12);
+    doc.text(new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 30, { align: "center" });
+
+    // Add logo
     const logoURL = "assets/img/logo.png";
     const logoImg = await loadImage(logoURL);
-    const logoWidth = 40;
-    const logoHeight = 20;
+    const logoWidth = 60;
+    const logoHeight = 30;
     doc.addImage(
       logoImg,
       "PNG",
       pageWidth / 2 - logoWidth / 2,
-      10,
+      pageHeight / 2 - 80,
       logoWidth,
       logoHeight
     );
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "bold");
-    doc.text("VCRA PRODUCT INSPECTION REPORT", pageWidth / 2, 35, {
-      align: "center",
-    });
-    y = 50;
+
+    // Start content on new page
+    doc.addPage();
+    addPageHeader();
 
     // Function to add a section with title and table
     async function addSection(title, headers, rows) {
-      const contentHeight = (rows.length + 1) * 10 + 30; // Estimate height
+      const contentHeight = (rows.length + 1) * 10 + 40; // Estimate height
       if (checkPageBreak(contentHeight)) {
         y += 10; // Add some space at the top of the new page
       }
@@ -362,43 +399,22 @@ async function generatePDF() {
       await addTable(headers, rows);
     }
 
-    // Inspection Form Details
+    // Add sections
     await addSection("Inspection Form Details", ["Label", "Value"], collectFormData("inspectionForm"));
-
-    // Production Order Number
     await addSection("Production Order Number", ["Production Order Number", "Color", "Quantity"], collectTableData("#dynamicTable1"));
-
-    // AQL and Sample Size
     await addSection("AQL and Sample Size", ["Label", "Value"], collectFormData("thirdform"));
-
-    // Product Pictures
-    if (checkPageBreak(150)) {
-      y += 10;
-    }
+    
+    // Product Pictures always start on a new page
     await addImages("#imageUploadContainer", "Product Pictures");
-
-    // Product Details Verification
+    
     await addSection("Product Details Verification", ["Description", "Confirm", "Not Confirm", "N/A"], collectRadioData(".product-details-verification table"));
-
-    // Measurement Verification Sheet
     await addSection("Measurement Verification Sheet", ["Point of Measure", "Size", "Tolerance", "Spec", "", "", ""], collectTableData("#dynamicTable"));
-
-    // Quality Check List
     await addSection("Quality Check List On Material & Workmanship", ["Material & Workmanship Details", "Critical", "Major", "Minor"], collectTableData("#dynamicTable2"));
-
-    // Appearance and Packing
     await addSection("Appearance and Packing", ["Description", "Confirm", "Not Confirm", "N/A", "Comments"], collectRadioData("#form1111"));
-
-    // Material
     await addSection("Material", ["Description", "Confirm", "Not Confirm", "N/A", "Comments"], collectRadioData("#formmaterial"));
-
-    // Accessories & Trims
     await addSection("Accessories & Trims", ["Description", "Confirm", "Not Confirm", "N/A", "Comments"], collectRadioData("#accessories-trims-form"));
-
-    // Defect Pictures
-    if (checkPageBreak(150)) {
-      y += 10;
-    }
+    
+    // Defect Pictures always start on a new page
     await addImages("#photoUploadContainer", "Defect Pictures");
 
     // Inspection Result
